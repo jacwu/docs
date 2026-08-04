@@ -1,2 +1,3 @@
 - [Azure 跨租户迁移虚拟机：SAS 直传方案](docs/azure-cross-tenant-vm-migration/azure-cross-tenant-vm-migration.md)
 - [Azure Account Owner 是什么，以及如何在界面上创建订阅](docs/azure-account-owner-create-subscription/azure-account-owner-create-subscription.md)
+- [如何给 Azure 订阅设置用量告警](docs/azure-subscription-usage-alerts/azure-subscription-usage-alerts.md)
