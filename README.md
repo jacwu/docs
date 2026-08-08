@@ -1,6 +1,7 @@
-- [Azure 跨租户迁移虚拟机：SAS 直传方案](docs/azure-cross-tenant-vm-migration/azure-cross-tenant-vm-migration.md)
 - [Azure Account Owner 是什么，以及如何在界面上创建订阅](docs/azure-account-owner-create-subscription/azure-account-owner-create-subscription.md)
 - [Azure Account Owner 如何查看相关订阅用量并导出 CSV](docs/azure-account-owner-cost-analysis/azure-account-owner-cost-analysis.md)
+- [Azure Account Owner 如何下载 Azure 用量明细](docs/azure-account-owner-download-usage-details/azure-account-owner-download-usage-details.md)
 - [如何给 Azure 订阅设置用量告警](docs/azure-subscription-usage-alerts/azure-subscription-usage-alerts.md)
 - [Azure Foundry Endpoint Cache测试](docs/azure-foundry-dual-endpoint-cache-test/azure-foundry-dual-endpoint-cache-test.md)
 - [关闭 Grounding with Bing Search](docs/how-to-disable-grounded-bing-search/how-to-disable-grounded-bing-search.md)
+- [Azure 跨租户迁移虚拟机：SAS 直传方案](docs/azure-cross-tenant-vm-migration/azure-cross-tenant-vm-migration.md)
