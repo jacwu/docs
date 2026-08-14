@@ -122,6 +122,17 @@ Management Group 可以包含：
 - 订阅可以在有权限的情况下移动到另一个 Management Group。
 - 移动订阅不会移动其中的资源，但其继承的 RBAC 和 Policy 可能发生变化。
 
+### 创建订阅时如何确保进入指定 Management Group
+
+在 Azure 门户创建订阅时，进入 **Subscriptions（订阅）** → **+ Add（添加）**，填写 **Basics（基本信息）** 后切换到 **Advanced（高级）**，在 **Management group（管理组）** 中选择目标管理组。这里只能选择订阅所属 Microsoft Entra tenant 中、当前账号有权查看和加入的 Management Group。
+
+如果没有显式指定，新订阅默认进入 Tenant Root Group。租户管理员也可以修改新订阅的默认落点：
+
+1. 打开 **Management groups（管理组）** → **Tenant root group**。
+2. 选择 **Settings（设置）** → **Change default management group（更改默认管理组）**。
+3. 选择专门用于接收新订阅的 Management Group，例如 `New Subscriptions`。
+
+
 需要特别区分两套概念：
 
 | 概念 | 解决什么问题 |
