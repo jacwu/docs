@@ -12,4 +12,5 @@
 - [GitHub Copilot AI Credit 用量 API 说明](docs/github-copilot-ai-credit-api/github-copilot-ai-credit-api.md)
 - [为 GitHub Copilot 配置 Azure Foundry 模型](docs/github-copilot-azure-foundry-model/github-copilot-azure-foundry-model.md)
 - [如何创建 GitHub Enterprise](docs/github-create-enterprise/github-create-enterprise.md)
+- [为 GitHub Enterprise 配置 Microsoft Entra ID（OIDC）](docs/github-enterprise-entra-oidc/github-enterprise-entra-oidc.md)
 - [OpenAI Prompt Cache Write：机制、术语与禁用方法](docs/openai-prompt-cache-write/openai-prompt-cache-write.md)
