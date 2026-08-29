@@ -14,4 +14,5 @@
 - [如何创建 GitHub Enterprise](docs/github-create-enterprise/github-create-enterprise.md)
 - [为 GitHub Enterprise 配置 Microsoft Entra ID（OIDC）](docs/github-enterprise-entra-oidc/github-enterprise-entra-oidc.md)
 - [通过 GitHub OAuth App 获取用户访问令牌](docs/github-oauth-app-user-access-token/github-oauth-app-user-access-token.md)
+- [为 OpenCode 配置自定义Anthropic端点](docs/opencode-anthropic-model-config/opencode-anthropic-model-config.md)
 - [OpenAI Prompt Cache Write：机制、术语与禁用方法](docs/openai-prompt-cache-write/openai-prompt-cache-write.md)
