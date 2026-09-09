@@ -17,3 +17,4 @@
 - [为 OpenCode 配置自定义Anthropic端点](docs/opencode-anthropic-model-config/opencode-anthropic-model-config.md)
 - [OpenAI Prompt Cache Write：机制、术语与禁用方法](docs/openai-prompt-cache-write/openai-prompt-cache-write.md)
 - [使用 Azure API Management 和 Container Apps 对模型进行流式记账](docs/apim-container-app-streaming-token-accounting/apim-container-app-streaming-token-accounting.md)
+- [使用 Azure API Management 对 Azure GPT Image 2 进行负载均衡](docs/azure-foundry-image-apim/azure-foundry-image-apim.md)

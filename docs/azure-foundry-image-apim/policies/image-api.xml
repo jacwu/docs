@@ -1,0 +1,39 @@
+<policies>
+  <inbound>
+    <base />
+    <!-- APIM has already validated the client subscription key. Never forward it. -->
+    <set-header name="api-key" exists-action="delete" />
+    <set-header name="Authorization" exists-action="delete" />
+    <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
+    <set-query-parameter name="subscription-key" exists-action="delete" />
+    <set-query-parameter name="api-version" exists-action="override">
+      <value>__API_VERSION__</value>
+    </set-query-parameter>
+    <!-- Backend credentials inject the Foundry key after client credentials are removed. -->
+    <set-backend-service backend-id="image-pool" />
+  </inbound>
+  <backend>
+    <!-- Do not retry non-idempotent generation POSTs after ambiguous timeouts. -->
+    <forward-request timeout="120" buffer-response="false" />
+  </backend>
+  <outbound>
+    <base />
+    <choose>
+      <when condition="@(__EXPOSE_BACKEND__)">
+        <!-- A path alone cannot distinguish identically named deployments in different accounts. -->
+        <set-header name="X-Image-Backend-Host" exists-action="override">
+          <value>@(context.Request.Url.Host)</value>
+        </set-header>
+        <set-header name="X-Image-Backend-Path" exists-action="override">
+          <value>@(context.Request.Url.Path)</value>
+        </set-header>
+      </when>
+    </choose>
+    <set-header name="Cache-Control" exists-action="override">
+      <value>no-store</value>
+    </set-header>
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

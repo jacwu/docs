@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "targetResourceGroup": { "value": "<production-resource-group>" },
+    "resourceGroupLocation": { "value": "<resource-group-location>" },
+    "apimLocation": { "value": "<apim-location>" },
+    "apimName": { "value": "<production-apim-name>" },
+    "publisherEmail": { "value": "<publisher-email>" },
+    "publisherName": { "value": "Image API" },
+    "backends": { "value": [
+      {
+        "sourceResourceGroup": "<source-resource-group-a>",
+        "foundryAccountName": "<foundry-account-a>",
+        "url": "https://<foundry-account-a>.openai.azure.com/openai/deployments/<deployment-a>/images"
+      },
+      {
+        "sourceResourceGroup": "<source-resource-group-b>",
+        "foundryAccountName": "<foundry-account-b>",
+        "url": "https://<foundry-account-b>.openai.azure.com/openai/deployments/<deployment-b>/images"
+      }
+    ] },
+    "imageApiVersion": { "value": "2025-04-01-preview" },
+    "exposeBackendPath": { "value": false }
+  }
+}
