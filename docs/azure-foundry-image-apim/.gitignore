@@ -1,0 +1,8 @@
+.local/
+__pycache__/
+*.pyc
+*.zip
+*.local.json
+.env
+.env.*
+.DS_Store

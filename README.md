@@ -17,4 +17,8 @@
 - [为 OpenCode 配置自定义Anthropic端点](docs/opencode-anthropic-model-config/opencode-anthropic-model-config.md)
 - [OpenAI Prompt Cache Write：机制、术语与禁用方法](docs/openai-prompt-cache-write/openai-prompt-cache-write.md)
 - [使用 Azure API Management 和 Container Apps 对模型进行流式记账](docs/apim-container-app-streaming-token-accounting/apim-container-app-streaming-token-accounting.md)
+- [使用 Azure API Management 和 Jev 构建智能 Model Router](docs/apim-jev-model-router/apim-jev-model-router.md)
 - [使用 Azure API Management 对 Azure GPT Image 2 进行负载均衡](docs/azure-foundry-image-apim/azure-foundry-image-apim.md)
+- [基于 GitHub Agentic Workflow 驱动 AI 跨仓库开发](docs/github-agentic-workflow-cross-repo-development/github-agentic-workflow-cross-repo-development.md)
+- [什么是 Docker Sandbox：优势、架构与配置方法](docs/docker-sandbox-guide/docker-sandbox-guide.md)
+- [Azure Container Apps 中的 BFF 设计：Web 统一入口与内部 API](docs/azure-container-apps-web-internal-api/azure-container-apps-web-internal-api.md)
