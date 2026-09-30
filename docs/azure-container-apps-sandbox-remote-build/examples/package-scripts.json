@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest run tests/unit",
+    "start": "vite preview --host 0.0.0.0 --port 4173 --strictPort",
+    "build:remote": "node scripts/remote.mjs build",
+    "run:remote": "node scripts/remote.mjs run"
+  }
+}

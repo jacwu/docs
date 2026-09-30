@@ -21,4 +21,6 @@
 - [使用 Azure API Management 对 Azure GPT Image 2 进行负载均衡](docs/azure-foundry-image-apim/azure-foundry-image-apim.md)
 - [基于 GitHub Agentic Workflow 驱动 AI 跨仓库开发](docs/github-agentic-workflow-cross-repo-development/github-agentic-workflow-cross-repo-development.md)
 - [什么是 Docker Sandbox：优势、架构与配置方法](docs/docker-sandbox-guide/docker-sandbox-guide.md)
+- [Azure Container Apps Sandbox：远程构建与测试的优势和适用场景](docs/azure-container-apps-sandbox-remote-build/azure-container-apps-sandbox-remote-build.md)
+- [Azure Container Apps Sandbox：长时间 Agent 任务的保活设计与实现](docs/azure-container-apps-sandbox-keepalive/azure-container-apps-sandbox-keepalive.md)
 - [Azure Container Apps 中的 BFF 设计：Web 统一入口与内部 API](docs/azure-container-apps-web-internal-api/azure-container-apps-web-internal-api.md)

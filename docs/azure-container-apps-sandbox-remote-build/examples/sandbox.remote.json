@@ -1,0 +1,13 @@
+{
+  "subscription": "YOUR_SUBSCRIPTION_ID",
+  "resourceGroup": "YOUR_RESOURCE_GROUP",
+  "sandboxGroup": "YOUR_SANDBOX_GROUP",
+  "region": "YOUR_REGION",
+  "sandboxId": "YOUR_SANDBOX_ID",
+  "kind": "web",
+  "include": [
+    "package.json", "package-lock.json", "index.html",
+    "src", "public", "tests", "scripts",
+    "vite.config.ts", "vite.config.js", "tsconfig.json"
+  ]
+}
