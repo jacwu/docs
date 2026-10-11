@@ -1,0 +1,60 @@
+{
+  "rules": [
+    "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+    "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+    "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+    "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+    "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+    "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+    "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+  ],
+  "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+  "parameter_values": {
+    "amount_limit": [
+      100,
+      200,
+      300,
+      500,
+      800,
+      1200
+    ],
+    "units_limit": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      8
+    ],
+    "age_limit": [
+      3,
+      5,
+      7,
+      14,
+      21,
+      30
+    ],
+    "return_days": [
+      7,
+      14,
+      21,
+      30
+    ],
+    "evidence_min": [
+      1,
+      2,
+      3
+    ],
+    "damage_return_required": [
+      false,
+      true
+    ],
+    "delivery_grace": [
+      2,
+      3,
+      5,
+      7
+    ]
+  },
+  "holdout": "(amount_index + units_index) mod 6: train=0,1,2; validation=3; calibration=4; test=5; all age values stay together"
+}

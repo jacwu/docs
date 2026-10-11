@@ -26,3 +26,4 @@
 - [Azure Container Apps 中的 BFF 设计：Web 统一入口与内部 API](docs/azure-container-apps-web-internal-api/azure-container-apps-web-internal-api.md)
 - [用 claude-api 为 AI Agent 建立评测并迭代优化](docs/agent-eval-design-and-hillclimbing/agent-eval-design-and-hillclimbing.md)
 - [用 Telegram 和 Foundry Hosted Agent 搭建低成本个人助理](docs/telegram-foundry-hosted-agent-assistant/telegram-foundry-hosted-agent-assistant.md)
+- [使用 PyTorch + MPS 微调 Qwen](docs/pytorch-mps-qwen-finetuning/pytorch-mps-qwen-finetuning.md)
