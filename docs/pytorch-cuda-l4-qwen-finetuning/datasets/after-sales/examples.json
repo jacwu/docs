@@ -1,0 +1,4502 @@
+[
+  {
+    "case_id": "as4-8552df5d91b9b15ad38b-v0",
+    "group_id": "as4-8552df5d91b9b15ad38b",
+    "provenance": {
+      "challenge_variant": 4,
+      "change_paths": [
+        "/state/policy/parameters/age_limit"
+      ],
+      "fact_variant": 0,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "counterfactual",
+      "policy_sha256": "079344dc28a417505445a1a11d823ca71639e38d2785e92f3f5aa5053e19ccfd",
+      "scenario_family": "age_policy_refund_only",
+      "semantic_sha256": "f21548a9210a111edf5592ae2609c46155a47269a5295f7e16d2d174ac3a6e4d",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "包裹里的东西似乎没齐，想跟进缺件售后。",
+        "policy": {
+          "parameters": {
+            "age_limit": 21,
+            "amount_limit": 500,
+            "evidence_min": 2,
+            "units_limit": 8
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 3,
+          "amount_yuan": 30,
+          "claim": "missing",
+          "conflicting_records": false,
+          "evidence_level": 2,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 2,
+          "paid_copies": 1,
+          "refund_status": "none",
+          "request_age_days": 27,
+          "requested": "refund",
+          "stock": true
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 3
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 30
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 27
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 21
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": "manual_review",
+        "rule_ids": [
+          "A11",
+          "A20"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 3
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 30
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 27
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 21
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": 2,
+        "rule_ids": [
+          "P2"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 3
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 30
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 27
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 21
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": false,
+        "rule_ids": [
+          "A11",
+          "A20",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-8552df5d91b9b15ad38b-v1",
+    "group_id": "as4-8552df5d91b9b15ad38b",
+    "provenance": {
+      "challenge_variant": 4,
+      "change_paths": [
+        "/state/policy/parameters/age_limit"
+      ],
+      "fact_variant": 1,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "counterfactual",
+      "policy_sha256": "e2a058614215a427195a46e995a9256b518e13c496350a8ab6ba88ea199a7d98",
+      "scenario_family": "age_policy_refund_only",
+      "semantic_sha256": "7f82386a7009316ba2d1f131c38c86b123688f6b3e34f569fc98490bffe79745",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "包裹里的东西似乎没齐，想跟进缺件售后。",
+        "policy": {
+          "parameters": {
+            "age_limit": 30,
+            "amount_limit": 500,
+            "evidence_min": 2,
+            "units_limit": 8
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 3,
+          "amount_yuan": 30,
+          "claim": "missing",
+          "conflicting_records": false,
+          "evidence_level": 2,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 2,
+          "paid_copies": 1,
+          "refund_status": "none",
+          "request_age_days": 27,
+          "requested": "refund",
+          "stock": true
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 3
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 30
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 27
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 30
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": "refund_only",
+        "rule_ids": [
+          "A11"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 3
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 30
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 27
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 30
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": 2,
+        "rule_ids": [
+          "P2"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 3
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 30
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 27
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 30
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": true,
+        "rule_ids": [
+          "A11",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-59391280fca1bece2928-v0",
+    "group_id": "as4-59391280fca1bece2928",
+    "provenance": {
+      "challenge_variant": 2,
+      "change_paths": [
+        "/state/records/request_age_days"
+      ],
+      "fact_variant": 0,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "invariance",
+      "policy_sha256": "f6d98c1236fcd687498210431c00041838342e8f465eb3eee98c62986ce8f46a",
+      "scenario_family": "age_inclusive_reship",
+      "semantic_sha256": "29d5592c4ed680c5499e748577463f26bdea7dd2d481fe121057caecb7af4daa",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "我还没有拿到包裹，想查一下物流售后进展。",
+        "policy": {
+          "parameters": {
+            "age_limit": 7,
+            "amount_limit": 300,
+            "delivery_grace": 3,
+            "units_limit": 6
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 4,
+          "amount_yuan": 248,
+          "carrier_lost": true,
+          "claim": "delivery",
+          "conflicting_records": false,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 0,
+          "paid_copies": 1,
+          "refund_status": "none",
+          "request_age_days": 6,
+          "requested": "replacement",
+          "stock": true
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 4
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 248
+          },
+          {
+            "path": "/state/records/carrier_lost",
+            "value": true
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "delivery"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "replacement"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 7
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/delivery_grace",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": "reship",
+        "rule_ids": [
+          "A10"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 4
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 248
+          },
+          {
+            "path": "/state/records/carrier_lost",
+            "value": true
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "delivery"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "replacement"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 7
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/delivery_grace",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": 2,
+        "rule_ids": [
+          "P2"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 4
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 248
+          },
+          {
+            "path": "/state/records/carrier_lost",
+            "value": true
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "delivery"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "replacement"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 7
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/delivery_grace",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": false,
+        "rule_ids": [
+          "A10",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-59391280fca1bece2928-v1",
+    "group_id": "as4-59391280fca1bece2928",
+    "provenance": {
+      "challenge_variant": 2,
+      "change_paths": [
+        "/state/records/request_age_days"
+      ],
+      "fact_variant": 1,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "invariance",
+      "policy_sha256": "f6d98c1236fcd687498210431c00041838342e8f465eb3eee98c62986ce8f46a",
+      "scenario_family": "age_inclusive_reship",
+      "semantic_sha256": "29d5592c4ed680c5499e748577463f26bdea7dd2d481fe121057caecb7af4daa",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "我还没有拿到包裹，想查一下物流售后进展。",
+        "policy": {
+          "parameters": {
+            "age_limit": 7,
+            "amount_limit": 300,
+            "delivery_grace": 3,
+            "units_limit": 6
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 4,
+          "amount_yuan": 248,
+          "carrier_lost": true,
+          "claim": "delivery",
+          "conflicting_records": false,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 0,
+          "paid_copies": 1,
+          "refund_status": "none",
+          "request_age_days": 7,
+          "requested": "replacement",
+          "stock": true
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 4
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 248
+          },
+          {
+            "path": "/state/records/carrier_lost",
+            "value": true
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "delivery"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 7
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "replacement"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 7
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/delivery_grace",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": "reship",
+        "rule_ids": [
+          "A10"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 4
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 248
+          },
+          {
+            "path": "/state/records/carrier_lost",
+            "value": true
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "delivery"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 7
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "replacement"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 7
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/delivery_grace",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": 2,
+        "rule_ids": [
+          "P2"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 4
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 248
+          },
+          {
+            "path": "/state/records/carrier_lost",
+            "value": true
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "delivery"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 7
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "replacement"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 7
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/delivery_grace",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": false,
+        "rule_ids": [
+          "A10",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-dfa222ecf6ae58bbe89c-v0",
+    "group_id": "as4-dfa222ecf6ae58bbe89c",
+    "provenance": {
+      "challenge_variant": 7,
+      "change_paths": [
+        "/state/records/affected_units",
+        "/state/records/amount_yuan",
+        "/state/records/request_age_days"
+      ],
+      "fact_variant": 0,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "invariance",
+      "policy_sha256": "a94a3d76a71d5d6eb11bbd755946e862ba658dc530ef8dcb4733afa2e7804339",
+      "scenario_family": "precedence_pending",
+      "semantic_sha256": "a27bf296c0439263146f9465d3cf1cead2dd91213b56aecefbea293e67183dfa",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "我反馈的是少件问题，麻烦核对这单记录。",
+        "policy": {
+          "parameters": {
+            "age_limit": 14,
+            "amount_limit": 500,
+            "evidence_min": 2,
+            "units_limit": 8
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 6,
+          "amount_yuan": 212,
+          "claim": "missing",
+          "conflicting_records": false,
+          "evidence_level": 3,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 2,
+          "paid_copies": 1,
+          "refund_status": "pending",
+          "request_age_days": 10,
+          "requested": "refund",
+          "stock": true
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 6
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 212
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 3
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "pending"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 10
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": "wait",
+        "rule_ids": [
+          "A03"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 6
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 212
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 3
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "pending"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 10
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": 2,
+        "rule_ids": [
+          "P2"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 6
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 212
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 3
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "pending"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 10
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": false,
+        "rule_ids": [
+          "A03",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-dfa222ecf6ae58bbe89c-v1",
+    "group_id": "as4-dfa222ecf6ae58bbe89c",
+    "provenance": {
+      "challenge_variant": 7,
+      "change_paths": [
+        "/state/records/affected_units",
+        "/state/records/amount_yuan",
+        "/state/records/request_age_days"
+      ],
+      "fact_variant": 1,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "invariance",
+      "policy_sha256": "a94a3d76a71d5d6eb11bbd755946e862ba658dc530ef8dcb4733afa2e7804339",
+      "scenario_family": "precedence_pending",
+      "semantic_sha256": "d7ab2738fdba479d5ed69a0f364abe918938a159b3f00152b4a69cf046f565f2",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "我反馈的是少件问题，麻烦核对这单记录。",
+        "policy": {
+          "parameters": {
+            "age_limit": 14,
+            "amount_limit": 500,
+            "evidence_min": 2,
+            "units_limit": 8
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 9,
+          "amount_yuan": 711,
+          "claim": "missing",
+          "conflicting_records": false,
+          "evidence_level": 3,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 2,
+          "paid_copies": 1,
+          "refund_status": "pending",
+          "request_age_days": 20,
+          "requested": "refund",
+          "stock": true
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 9
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 711
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 3
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "pending"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 20
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": "wait",
+        "rule_ids": [
+          "A03"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 9
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 711
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 3
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "pending"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 20
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": 2,
+        "rule_ids": [
+          "P2"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 9
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 711
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 3
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "pending"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 20
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 2
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 8
+          }
+        ],
+        "hard_label": false,
+        "rule_ids": [
+          "A03",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-4a62ed740c5b8a4a999e-v0",
+    "group_id": "as4-4a62ed740c5b8a4a999e",
+    "provenance": {
+      "challenge_variant": 3,
+      "change_paths": [
+        "/state/records/affected_units",
+        "/state/records/amount_yuan"
+      ],
+      "fact_variant": 0,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "invariance",
+      "policy_sha256": "aa20f55b5757f04b3d8d7487078b9307959756ba710999cc63ee01ae56187c5f",
+      "scenario_family": "precedence_proof_missing",
+      "semantic_sha256": "5764526b8cc1ebac8895f68adf1ca34446eb3c360013838e518ea431a095c01e",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "我反馈的是少件问题，麻烦核对这单记录。",
+        "policy": {
+          "parameters": {
+            "age_limit": 14,
+            "amount_limit": 200,
+            "evidence_min": 3,
+            "units_limit": 1
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 1,
+          "amount_yuan": 166,
+          "claim": "missing",
+          "conflicting_records": false,
+          "evidence_level": 2,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 0,
+          "paid_copies": 1,
+          "refund_status": "none",
+          "request_age_days": 6,
+          "requested": "refund",
+          "stock": true
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 1
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 166
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 200
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": "request_info",
+        "rule_ids": [
+          "A08"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 1
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 166
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 200
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": 0,
+        "rule_ids": [
+          "P0"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 1
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 166
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 200
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": false,
+        "rule_ids": [
+          "A08",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-4a62ed740c5b8a4a999e-v1",
+    "group_id": "as4-4a62ed740c5b8a4a999e",
+    "provenance": {
+      "challenge_variant": 3,
+      "change_paths": [
+        "/state/records/affected_units",
+        "/state/records/amount_yuan"
+      ],
+      "fact_variant": 1,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "invariance",
+      "policy_sha256": "aa20f55b5757f04b3d8d7487078b9307959756ba710999cc63ee01ae56187c5f",
+      "scenario_family": "precedence_proof_missing",
+      "semantic_sha256": "558e374dfec7c01dbfc1702fd912257ca8ee3150b5b1d583bba20a10d82a52c2",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "我反馈的是少件问题，麻烦核对这单记录。",
+        "policy": {
+          "parameters": {
+            "age_limit": 14,
+            "amount_limit": 200,
+            "evidence_min": 3,
+            "units_limit": 1
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 3,
+          "amount_yuan": 284,
+          "claim": "missing",
+          "conflicting_records": false,
+          "evidence_level": 2,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 0,
+          "paid_copies": 1,
+          "refund_status": "none",
+          "request_age_days": 6,
+          "requested": "refund",
+          "stock": true
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 3
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 284
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 200
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": "request_info",
+        "rule_ids": [
+          "A08"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 3
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 284
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 200
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": 0,
+        "rule_ids": [
+          "P0"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 3
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 284
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "missing"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 200
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 3
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": false,
+        "rule_ids": [
+          "A08",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-fc25ff2337e33916a82f-v0",
+    "group_id": "as4-fc25ff2337e33916a82f",
+    "provenance": {
+      "challenge_variant": null,
+      "change_paths": [
+        "/state/records/fraud_risk"
+      ],
+      "fact_variant": 0,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "counterfactual",
+      "policy_sha256": "30ef9ecee773df6a828328f941c2c6042c8e78681a0fd4147d7d35acc2ad352e",
+      "scenario_family": "priority_risk_order",
+      "semantic_sha256": "1cf958fe3b51790df021fbf223c284b87e96fae45efa33075607e15f9687bc25",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "我想取消这笔订单，请查一下现在的进度。",
+        "policy": {
+          "parameters": {
+            "age_limit": 14,
+            "amount_limit": 500,
+            "units_limit": 6
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 2,
+          "amount_yuan": 339,
+          "claim": "cancel",
+          "conflicting_records": false,
+          "fraud_risk": false,
+          "order_verified": false,
+          "overdue_days": 0,
+          "paid_copies": 1,
+          "refund_status": "none",
+          "request_age_days": 5,
+          "requested": "refund",
+          "shipment": "unshipped"
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 2
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 339
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "cancel"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": false
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 5
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/shipment",
+            "value": "unshipped"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": "request_info",
+        "rule_ids": [
+          "A02"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 2
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 339
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "cancel"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": false
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 5
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/shipment",
+            "value": "unshipped"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": 0,
+        "rule_ids": [
+          "P0"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 2
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 339
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "cancel"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": false
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 5
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/shipment",
+            "value": "unshipped"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": false,
+        "rule_ids": [
+          "A02",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-fc25ff2337e33916a82f-v1",
+    "group_id": "as4-fc25ff2337e33916a82f",
+    "provenance": {
+      "challenge_variant": null,
+      "change_paths": [
+        "/state/records/fraud_risk"
+      ],
+      "fact_variant": 1,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "counterfactual",
+      "policy_sha256": "30ef9ecee773df6a828328f941c2c6042c8e78681a0fd4147d7d35acc2ad352e",
+      "scenario_family": "priority_risk_order",
+      "semantic_sha256": "1ca5c0a47657c08c8c5e961618b02fcf11735df13b98c08532af9c683dd9f2f7",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "我想取消这笔订单，请查一下现在的进度。",
+        "policy": {
+          "parameters": {
+            "age_limit": 14,
+            "amount_limit": 500,
+            "units_limit": 6
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 2,
+          "amount_yuan": 339,
+          "claim": "cancel",
+          "conflicting_records": false,
+          "fraud_risk": true,
+          "order_verified": false,
+          "overdue_days": 0,
+          "paid_copies": 1,
+          "refund_status": "none",
+          "request_age_days": 5,
+          "requested": "refund",
+          "shipment": "unshipped"
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 2
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 339
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "cancel"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": true
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": false
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 5
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/shipment",
+            "value": "unshipped"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": "manual_review",
+        "rule_ids": [
+          "A01"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 2
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 339
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "cancel"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": true
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": false
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 5
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/shipment",
+            "value": "unshipped"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": 3,
+        "rule_ids": [
+          "P3"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 2
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 339
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "cancel"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": true
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": false
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 0
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 5
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/shipment",
+            "value": "unshipped"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 14
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 500
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 6
+          }
+        ],
+        "hard_label": false,
+        "rule_ids": [
+          "A01",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-e65846c0cc698d72e31c-v0",
+    "group_id": "as4-e65846c0cc698d72e31c",
+    "provenance": {
+      "challenge_variant": 6,
+      "change_paths": [
+        "/state/records/affected_units",
+        "/state/records/request_age_days"
+      ],
+      "fact_variant": 0,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "counterfactual",
+      "policy_sha256": "c81a5b99d8c0ac3d509b4df25fd888b679ef26a747377897532f310937d93d8c",
+      "scenario_family": "auto_caps_duplicate",
+      "semantic_sha256": "3a2c2a7a8225fe6cd5a0d142daf847197c5d9ba23e89cf015d970c82b6e9e416",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "付款时好像重复操作了，想核对这单的扣款情况。",
+        "policy": {
+          "parameters": {
+            "age_limit": 5,
+            "amount_limit": 1200,
+            "units_limit": 2
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 2,
+          "amount_yuan": 363,
+          "claim": "duplicate",
+          "conflicting_records": false,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 2,
+          "paid_copies": 2,
+          "refund_status": "none",
+          "request_age_days": 4,
+          "requested": "refund"
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 2
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 363
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "duplicate"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 2
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 4
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 1200
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 2
+          }
+        ],
+        "hard_label": "refund_only",
+        "rule_ids": [
+          "A05"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 2
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 363
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "duplicate"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 2
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 4
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 1200
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 2
+          }
+        ],
+        "hard_label": 2,
+        "rule_ids": [
+          "P2"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 2
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 363
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "duplicate"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 2
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 4
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 1200
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 2
+          }
+        ],
+        "hard_label": true,
+        "rule_ids": [
+          "A05",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-e65846c0cc698d72e31c-v1",
+    "group_id": "as4-e65846c0cc698d72e31c",
+    "provenance": {
+      "challenge_variant": 6,
+      "change_paths": [
+        "/state/records/affected_units",
+        "/state/records/request_age_days"
+      ],
+      "fact_variant": 1,
+      "generator": "challenge",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "counterfactual",
+      "policy_sha256": "c81a5b99d8c0ac3d509b4df25fd888b679ef26a747377897532f310937d93d8c",
+      "scenario_family": "auto_caps_duplicate",
+      "semantic_sha256": "04d52e97d72c51fe77b43f21606986cc5d6456733c7f6abfc484df05ea508849",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "付款时好像重复操作了，想核对这单的扣款情况。",
+        "policy": {
+          "parameters": {
+            "age_limit": 5,
+            "amount_limit": 1200,
+            "units_limit": 2
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 4,
+          "amount_yuan": 363,
+          "claim": "duplicate",
+          "conflicting_records": false,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 2,
+          "paid_copies": 2,
+          "refund_status": "none",
+          "request_age_days": 11,
+          "requested": "refund"
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 4
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 363
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "duplicate"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 2
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 11
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 1200
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 2
+          }
+        ],
+        "hard_label": "manual_review",
+        "rule_ids": [
+          "A05",
+          "A20"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 4
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 363
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "duplicate"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 2
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 11
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 1200
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 2
+          }
+        ],
+        "hard_label": 2,
+        "rule_ids": [
+          "P2"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 4
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 363
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "duplicate"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 2
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 2
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 11
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 1200
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 2
+          }
+        ],
+        "hard_label": false,
+        "rule_ids": [
+          "A05",
+          "A20",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-bb1a09e4cae3e767f034-v0",
+    "group_id": "as4-bb1a09e4cae3e767f034",
+    "provenance": {
+      "challenge_variant": null,
+      "change_paths": [
+        "/state/policy/parameters/damage_return_required"
+      ],
+      "fact_variant": 0,
+      "generator": "core",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "counterfactual",
+      "policy_sha256": "4c9935a332b7dec21ec8b8650c4942badcba1bd37221b797ab59473e0404f42c",
+      "scenario_family": "damage_return_policy",
+      "semantic_sha256": "759ed6e05e105ab604aaf029b79b30f4b5a1145fdbf4b424e1e154a2099168c9",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "收到的东西看起来有损坏，想跟进售后申请。",
+        "policy": {
+          "parameters": {
+            "age_limit": 5,
+            "amount_limit": 300,
+            "damage_return_required": false,
+            "evidence_min": 1,
+            "units_limit": 1
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 1,
+          "amount_yuan": 205,
+          "claim": "damaged",
+          "conflicting_records": false,
+          "evidence_level": 2,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 6,
+          "paid_copies": 1,
+          "refund_status": "none",
+          "request_age_days": 4,
+          "requested": "refund",
+          "stock": true
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 1
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 205
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "damaged"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 4
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/damage_return_required",
+            "value": false
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 1
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": "refund_only",
+        "rule_ids": [
+          "A11"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 1
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 205
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "damaged"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 4
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/damage_return_required",
+            "value": false
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 1
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": 2,
+        "rule_ids": [
+          "P2"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 1
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 205
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "damaged"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 4
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/damage_return_required",
+            "value": false
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 1
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": true,
+        "rule_ids": [
+          "A11",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  },
+  {
+    "case_id": "as4-bb1a09e4cae3e767f034-v1",
+    "group_id": "as4-bb1a09e4cae3e767f034",
+    "provenance": {
+      "challenge_variant": null,
+      "change_paths": [
+        "/state/policy/parameters/damage_return_required"
+      ],
+      "fact_variant": 1,
+      "generator": "core",
+      "human_review": "pending",
+      "label_source": "fictional_policy_rule_derived",
+      "message_changed": false,
+      "pair_kind": "counterfactual",
+      "policy_sha256": "2c3162d48b436eb34283b9aefae3dd9876eb250306db6aeb539b9475d813c1c9",
+      "scenario_family": "damage_return_policy",
+      "semantic_sha256": "0cd15596d62b41552d1c7bf9458d941f2dabc32654d74abea04076e3dc08076e",
+      "synthetic": true
+    },
+    "request": {
+      "model": "jev-latest",
+      "questions": {
+        "next_action": {
+          "criteria": {
+            "decline": "依政策拒绝本次申请或重复退款",
+            "manual_review": "人工核查或确认方案",
+            "refund_only": "无需退货的退款流程（重复扣款只退多扣部分）",
+            "request_info": "补充订单、证明或诉求信息",
+            "reship": "补发或换新",
+            "return_refund": "退货退款流程",
+            "wait": "等待现有物流或退款流程"
+          },
+          "instructions": "按state.policy的顺序和parameters，选择当前售后处理建议，注意最后的自动处理上限。",
+          "type": "choice"
+        },
+        "priority": {
+          "criteria": [
+            "0：常规",
+            "1：物流逾期或退款处理中",
+            "2：已核实损失或多扣",
+            "3：风险或记录冲突"
+          ],
+          "instructions": "仅按state.policy.priority对当前工单分级，不根据语气猜紧急程度。",
+          "type": "score"
+        },
+        "refund_ready": {
+          "criteria": {
+            "false": "当前不能直接启动上述退款流程",
+            "true": "可直接启动仅退款或退货退款流程"
+          },
+          "instructions": "当前是否已具备直接启动一种退款流程的条件？包括退货退款，不表示钱已退到；需要先补信息或人工确认时回答否。",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "message": "收到的东西看起来有损坏，想跟进售后申请。",
+        "policy": {
+          "parameters": {
+            "age_limit": 5,
+            "amount_limit": 300,
+            "damage_return_required": true,
+            "evidence_min": 1,
+            "units_limit": 1
+          },
+          "priority": "独立分级取首项：风险/记录冲突=3；多扣款、达到政策证明等级的损坏/缺件、承运商确认丢件=2；物流逾期或本次退款pending=1；其余=0。",
+          "rules": [
+            "教学政策，不是平台规则或法律。records为事实，message为未核验原话。refund_status只指本次售后单；paid_copies为历史成功扣款次数，退款不减少此数。",
+            "先匹配：风险或记录冲突→人工；订单未核实或扣款次数未知→补信息；本次退款pending→等待，done→拒绝重复申请；扣款0次→拒绝；至少2次→仅退多扣部分。",
+            "duplicate仅查到1次扣款→补信息；cancel未发货→仅退款，已发货→人工。",
+            "damaged/missing需evidence_level≥evidence_min；0=无证明，1=图片，2=视频核验，3=现场核验。delivery的carrier_lost=true本身是承运商已确认的丢件证明。",
+            "已核实损坏/缺件/丢件：requested=unknown→补信息；replacement有库存→补发，无库存→人工；refund时损坏按damage_return_required决定退货退款或仅退款，缺件/丢件仅退款。",
+            "delivery未确认丢件：overdue_days≤delivery_grace→等待，否则人工。no_reason仅包含无理由退货、requested必须为refund；日期/完好性/品类未知→补信息；已签收≤return_days且完好且非排除品类→退货退款，否则拒绝。",
+            "最后，若前述建议为仅退款/退货退款/补发，且amount_yuan、affected_units、request_age_days任一超过amount_limit、units_limit、age_limit，改为人工复核，不取消客户权利。金额是本次拟处理价值，不是订单累计付款；申请年龄从本次售后登记起算。"
+          ]
+        },
+        "records": {
+          "affected_units": 1,
+          "amount_yuan": 205,
+          "claim": "damaged",
+          "conflicting_records": false,
+          "evidence_level": 2,
+          "fraud_risk": false,
+          "order_verified": true,
+          "overdue_days": 6,
+          "paid_copies": 1,
+          "refund_status": "none",
+          "request_age_days": 4,
+          "requested": "refund",
+          "stock": true
+        }
+      }
+    },
+    "schema_version": "after-sales-challenge-v4",
+    "split": "train",
+    "targets": {
+      "next_action": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 1
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 205
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "damaged"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 4
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/damage_return_required",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 1
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": "return_refund",
+        "rule_ids": [
+          "A11"
+        ],
+        "type": "choice"
+      },
+      "priority": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 1
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 205
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "damaged"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 4
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/damage_return_required",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 1
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": 2,
+        "rule_ids": [
+          "P2"
+        ],
+        "type": "score"
+      },
+      "refund_ready": {
+        "evidence": [
+          {
+            "path": "/state/records/affected_units",
+            "value": 1
+          },
+          {
+            "path": "/state/records/amount_yuan",
+            "value": 205
+          },
+          {
+            "path": "/state/records/claim",
+            "value": "damaged"
+          },
+          {
+            "path": "/state/records/conflicting_records",
+            "value": false
+          },
+          {
+            "path": "/state/records/evidence_level",
+            "value": 2
+          },
+          {
+            "path": "/state/records/fraud_risk",
+            "value": false
+          },
+          {
+            "path": "/state/records/order_verified",
+            "value": true
+          },
+          {
+            "path": "/state/records/overdue_days",
+            "value": 6
+          },
+          {
+            "path": "/state/records/paid_copies",
+            "value": 1
+          },
+          {
+            "path": "/state/records/refund_status",
+            "value": "none"
+          },
+          {
+            "path": "/state/records/request_age_days",
+            "value": 4
+          },
+          {
+            "path": "/state/records/requested",
+            "value": "refund"
+          },
+          {
+            "path": "/state/records/stock",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/age_limit",
+            "value": 5
+          },
+          {
+            "path": "/state/policy/parameters/amount_limit",
+            "value": 300
+          },
+          {
+            "path": "/state/policy/parameters/damage_return_required",
+            "value": true
+          },
+          {
+            "path": "/state/policy/parameters/evidence_min",
+            "value": 1
+          },
+          {
+            "path": "/state/policy/parameters/units_limit",
+            "value": 1
+          }
+        ],
+        "hard_label": true,
+        "rule_ids": [
+          "A11",
+          "N1"
+        ],
+        "type": "noul"
+      }
+    }
+  }
+]

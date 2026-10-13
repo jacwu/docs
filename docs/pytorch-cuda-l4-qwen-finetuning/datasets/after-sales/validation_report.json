@@ -1,0 +1,1464 @@
+{
+  "status": "passed",
+  "dataset": "after-sales-challenge-v4",
+  "splits": {
+    "calibration": {
+      "cases": 1512,
+      "supervision_items": 4536,
+      "groups": 756,
+      "semantic_states": 1119,
+      "actions": {
+        "decline": 216,
+        "manual_review": 216,
+        "refund_only": 216,
+        "request_info": 216,
+        "reship": 216,
+        "return_refund": 216,
+        "wait": 216
+      },
+      "priority_levels": {
+        "0": 194,
+        "1": 407,
+        "2": 861,
+        "3": 50
+      },
+      "scenario_families": {
+        "age_excess_refund_only": 12,
+        "age_excess_reship": 12,
+        "age_excess_return_refund": 12,
+        "age_inclusive_refund_only": 12,
+        "age_inclusive_reship": 12,
+        "age_inclusive_return_refund": 12,
+        "age_policy_refund_only": 20,
+        "age_policy_reship": 20,
+        "age_policy_return_refund": 20,
+        "auto_caps_cancel": 28,
+        "auto_caps_duplicate": 28,
+        "auto_caps_no_reason": 28,
+        "auto_caps_refund_only": 28,
+        "auto_caps_reship": 28,
+        "auto_caps_return_refund": 28,
+        "cancel_identity": 4,
+        "cancel_payment_unknown": 4,
+        "cancel_shipment": 4,
+        "damage_preference": 20,
+        "damage_refund_proof": 4,
+        "damage_replacement_proof": 6,
+        "damage_return_policy": 20,
+        "delivery_deadline": 16,
+        "duplicate_payment": 4,
+        "excluded_category_unknown": 4,
+        "invariance_decline": 130,
+        "invariance_manual_review": 10,
+        "invariance_refund_only": 102,
+        "invariance_request_info": 110,
+        "invariance_reship": 134,
+        "invariance_return_refund": 120,
+        "invariance_wait": 144,
+        "late_return_date_unknown": 6,
+        "lost_preference": 10,
+        "missing_preference": 10,
+        "missing_refund_preference": 4,
+        "missing_refund_proof": 4,
+        "missing_replacement_proof": 8,
+        "pending_conflict": 12,
+        "pending_risk": 12,
+        "precedence_conflict": 14,
+        "precedence_delivery_wait": 14,
+        "precedence_done": 14,
+        "precedence_order_unknown": 14,
+        "precedence_payment_unknown": 14,
+        "precedence_pending": 14,
+        "precedence_preference_unknown": 14,
+        "precedence_proof_missing": 14,
+        "precedence_return_ineligible": 14,
+        "precedence_risk": 14,
+        "precedence_unpaid": 14,
+        "priority_conflict_order": 4,
+        "priority_done_duplicate": 4,
+        "priority_order_done": 4,
+        "priority_order_pending": 4,
+        "priority_pending_duplicate": 4,
+        "priority_risk_order": 4,
+        "priority_risk_payment": 4,
+        "refund_age": 4,
+        "refund_amount": 4,
+        "refund_conflict": 2,
+        "refund_lifecycle": 40,
+        "refund_risk": 2,
+        "refund_units": 4,
+        "replacement_age": 4,
+        "replacement_amount": 4,
+        "replacement_conflict": 2,
+        "replacement_preference_unknown": 6,
+        "replacement_risk": 2,
+        "replacement_stock": 4,
+        "replacement_units": 4,
+        "return_category": 6,
+        "return_category_unknown": 4,
+        "return_damaged_unknown": 4,
+        "return_date_unknown": 6,
+        "return_deadline": 8,
+        "return_intact": 6,
+        "return_intact_unknown": 6,
+        "unpaid_unknown": 6
+      },
+      "policy_combinations": 36,
+      "max_tokens_per_question": 858
+    },
+    "test": {
+      "cases": 2548,
+      "supervision_items": 7644,
+      "groups": 1274,
+      "semantic_states": 2024,
+      "actions": {
+        "decline": 364,
+        "manual_review": 364,
+        "refund_only": 364,
+        "request_info": 364,
+        "reship": 364,
+        "return_refund": 364,
+        "wait": 364
+      },
+      "priority_levels": {
+        "0": 313,
+        "1": 594,
+        "2": 1519,
+        "3": 122
+      },
+      "scenario_families": {
+        "age_excess_refund_only": 12,
+        "age_excess_reship": 12,
+        "age_excess_return_refund": 12,
+        "age_inclusive_refund_only": 12,
+        "age_inclusive_reship": 12,
+        "age_inclusive_return_refund": 12,
+        "age_policy_refund_only": 40,
+        "age_policy_reship": 40,
+        "age_policy_return_refund": 40,
+        "auto_caps_cancel": 28,
+        "auto_caps_duplicate": 28,
+        "auto_caps_no_reason": 28,
+        "auto_caps_refund_only": 28,
+        "auto_caps_reship": 28,
+        "auto_caps_return_refund": 28,
+        "cancel_identity": 12,
+        "cancel_payment_unknown": 12,
+        "cancel_shipment": 10,
+        "damage_preference": 60,
+        "damage_refund_proof": 14,
+        "damage_replacement_proof": 20,
+        "damage_return_policy": 60,
+        "delivery_deadline": 40,
+        "duplicate_payment": 12,
+        "excluded_category_unknown": 14,
+        "invariance_decline": 156,
+        "invariance_manual_review": 20,
+        "invariance_refund_only": 160,
+        "invariance_request_info": 122,
+        "invariance_reship": 192,
+        "invariance_return_refund": 178,
+        "invariance_wait": 184,
+        "late_return_date_unknown": 16,
+        "lost_preference": 30,
+        "missing_preference": 30,
+        "missing_refund_preference": 12,
+        "missing_refund_proof": 12,
+        "missing_replacement_proof": 20,
+        "pending_conflict": 40,
+        "pending_risk": 40,
+        "precedence_conflict": 28,
+        "precedence_delivery_wait": 28,
+        "precedence_done": 28,
+        "precedence_order_unknown": 28,
+        "precedence_payment_unknown": 28,
+        "precedence_pending": 28,
+        "precedence_preference_unknown": 28,
+        "precedence_proof_missing": 28,
+        "precedence_return_ineligible": 28,
+        "precedence_risk": 28,
+        "precedence_unpaid": 28,
+        "priority_conflict_order": 4,
+        "priority_done_duplicate": 4,
+        "priority_order_done": 4,
+        "priority_order_pending": 4,
+        "priority_pending_duplicate": 4,
+        "priority_risk_order": 4,
+        "priority_risk_payment": 4,
+        "refund_age": 10,
+        "refund_amount": 10,
+        "refund_conflict": 10,
+        "refund_lifecycle": 120,
+        "refund_risk": 10,
+        "refund_units": 10,
+        "replacement_age": 10,
+        "replacement_amount": 10,
+        "replacement_conflict": 10,
+        "replacement_preference_unknown": 20,
+        "replacement_risk": 10,
+        "replacement_stock": 10,
+        "replacement_units": 10,
+        "return_category": 20,
+        "return_category_unknown": 14,
+        "return_damaged_unknown": 14,
+        "return_date_unknown": 16,
+        "return_deadline": 20,
+        "return_intact": 20,
+        "return_intact_unknown": 16,
+        "unpaid_unknown": 16
+      },
+      "policy_combinations": 36,
+      "max_tokens_per_question": 857
+    },
+    "train": {
+      "cases": 3738,
+      "supervision_items": 11214,
+      "groups": 1869,
+      "semantic_states": 3069,
+      "actions": {
+        "decline": 534,
+        "manual_review": 534,
+        "refund_only": 534,
+        "request_info": 534,
+        "reship": 534,
+        "return_refund": 534,
+        "wait": 534
+      },
+      "priority_levels": {
+        "0": 426,
+        "1": 895,
+        "2": 2235,
+        "3": 182
+      },
+      "scenario_families": {
+        "age_excess_refund_only": 12,
+        "age_excess_reship": 12,
+        "age_excess_return_refund": 12,
+        "age_inclusive_refund_only": 12,
+        "age_inclusive_reship": 12,
+        "age_inclusive_return_refund": 12,
+        "age_policy_refund_only": 60,
+        "age_policy_reship": 60,
+        "age_policy_return_refund": 60,
+        "auto_caps_cancel": 28,
+        "auto_caps_duplicate": 28,
+        "auto_caps_no_reason": 28,
+        "auto_caps_refund_only": 28,
+        "auto_caps_reship": 28,
+        "auto_caps_return_refund": 28,
+        "cancel_identity": 24,
+        "cancel_payment_unknown": 24,
+        "cancel_shipment": 20,
+        "damage_preference": 120,
+        "damage_refund_proof": 30,
+        "damage_replacement_proof": 40,
+        "damage_return_policy": 120,
+        "delivery_deadline": 80,
+        "duplicate_payment": 24,
+        "excluded_category_unknown": 30,
+        "invariance_decline": 206,
+        "invariance_manual_review": 40,
+        "invariance_refund_only": 200,
+        "invariance_request_info": 172,
+        "invariance_reship": 232,
+        "invariance_return_refund": 218,
+        "invariance_wait": 234,
+        "late_return_date_unknown": 30,
+        "lost_preference": 60,
+        "missing_preference": 60,
+        "missing_refund_preference": 24,
+        "missing_refund_proof": 24,
+        "missing_replacement_proof": 40,
+        "pending_conflict": 80,
+        "pending_risk": 80,
+        "precedence_conflict": 28,
+        "precedence_delivery_wait": 28,
+        "precedence_done": 28,
+        "precedence_order_unknown": 28,
+        "precedence_payment_unknown": 28,
+        "precedence_pending": 28,
+        "precedence_preference_unknown": 28,
+        "precedence_proof_missing": 28,
+        "precedence_return_ineligible": 28,
+        "precedence_risk": 28,
+        "precedence_unpaid": 28,
+        "priority_conflict_order": 4,
+        "priority_done_duplicate": 4,
+        "priority_order_done": 4,
+        "priority_order_pending": 4,
+        "priority_pending_duplicate": 4,
+        "priority_risk_order": 4,
+        "priority_risk_payment": 4,
+        "refund_age": 20,
+        "refund_amount": 20,
+        "refund_conflict": 20,
+        "refund_lifecycle": 240,
+        "refund_risk": 20,
+        "refund_units": 20,
+        "replacement_age": 20,
+        "replacement_amount": 20,
+        "replacement_conflict": 20,
+        "replacement_preference_unknown": 40,
+        "replacement_risk": 20,
+        "replacement_stock": 20,
+        "replacement_units": 20,
+        "return_category": 40,
+        "return_category_unknown": 30,
+        "return_damaged_unknown": 30,
+        "return_date_unknown": 30,
+        "return_deadline": 40,
+        "return_intact": 40,
+        "return_intact_unknown": 30,
+        "unpaid_unknown": 30
+      },
+      "policy_combinations": 108,
+      "max_tokens_per_question": 858
+    },
+    "validation": {
+      "cases": 1512,
+      "supervision_items": 4536,
+      "groups": 756,
+      "semantic_states": 1119,
+      "actions": {
+        "decline": 216,
+        "manual_review": 216,
+        "refund_only": 216,
+        "request_info": 216,
+        "reship": 216,
+        "return_refund": 216,
+        "wait": 216
+      },
+      "priority_levels": {
+        "0": 179,
+        "1": 422,
+        "2": 861,
+        "3": 50
+      },
+      "scenario_families": {
+        "age_excess_refund_only": 12,
+        "age_excess_reship": 12,
+        "age_excess_return_refund": 12,
+        "age_inclusive_refund_only": 12,
+        "age_inclusive_reship": 12,
+        "age_inclusive_return_refund": 12,
+        "age_policy_refund_only": 20,
+        "age_policy_reship": 20,
+        "age_policy_return_refund": 20,
+        "auto_caps_cancel": 28,
+        "auto_caps_duplicate": 28,
+        "auto_caps_no_reason": 28,
+        "auto_caps_refund_only": 28,
+        "auto_caps_reship": 28,
+        "auto_caps_return_refund": 28,
+        "cancel_identity": 4,
+        "cancel_payment_unknown": 4,
+        "cancel_shipment": 4,
+        "damage_preference": 20,
+        "damage_refund_proof": 4,
+        "damage_replacement_proof": 6,
+        "damage_return_policy": 20,
+        "delivery_deadline": 16,
+        "duplicate_payment": 4,
+        "excluded_category_unknown": 4,
+        "invariance_decline": 130,
+        "invariance_manual_review": 10,
+        "invariance_refund_only": 102,
+        "invariance_request_info": 110,
+        "invariance_reship": 134,
+        "invariance_return_refund": 120,
+        "invariance_wait": 144,
+        "late_return_date_unknown": 6,
+        "lost_preference": 10,
+        "missing_preference": 10,
+        "missing_refund_preference": 4,
+        "missing_refund_proof": 4,
+        "missing_replacement_proof": 8,
+        "pending_conflict": 12,
+        "pending_risk": 12,
+        "precedence_conflict": 14,
+        "precedence_delivery_wait": 14,
+        "precedence_done": 14,
+        "precedence_order_unknown": 14,
+        "precedence_payment_unknown": 14,
+        "precedence_pending": 14,
+        "precedence_preference_unknown": 14,
+        "precedence_proof_missing": 14,
+        "precedence_return_ineligible": 14,
+        "precedence_risk": 14,
+        "precedence_unpaid": 14,
+        "priority_conflict_order": 4,
+        "priority_done_duplicate": 4,
+        "priority_order_done": 4,
+        "priority_order_pending": 4,
+        "priority_pending_duplicate": 4,
+        "priority_risk_order": 4,
+        "priority_risk_payment": 4,
+        "refund_age": 4,
+        "refund_amount": 4,
+        "refund_conflict": 2,
+        "refund_lifecycle": 40,
+        "refund_risk": 2,
+        "refund_units": 4,
+        "replacement_age": 4,
+        "replacement_amount": 4,
+        "replacement_conflict": 2,
+        "replacement_preference_unknown": 6,
+        "replacement_risk": 2,
+        "replacement_stock": 4,
+        "replacement_units": 4,
+        "return_category": 6,
+        "return_category_unknown": 4,
+        "return_damaged_unknown": 4,
+        "return_date_unknown": 6,
+        "return_deadline": 8,
+        "return_intact": 6,
+        "return_intact_unknown": 6,
+        "unpaid_unknown": 6
+      },
+      "policy_combinations": 36,
+      "max_tokens_per_question": 860
+    }
+  },
+  "cross_split_overlap": {
+    "policy_combinations": 0,
+    "normalized_states": 0,
+    "exact_customer_messages": 0,
+    "groups": 0
+  },
+  "evaluation_slice_counts": {
+    "calibration": {
+      "reaches_auto_limits": 802,
+      "bypasses_auto_limits": 710,
+      "action_policy_sensitive": 1075,
+      "action_policy_invariant": 437,
+      "age_policy_flip": 60,
+      "age_boundary": 72,
+      "precedence": 182,
+      "auto_caps": 168,
+      "invariance": 940,
+      "policy_flip": 80,
+      "policy_sensitive_amount_limit": 432,
+      "policy_sensitive_units_limit": 376,
+      "policy_sensitive_age_limit": 423,
+      "policy_sensitive_return_days": 139,
+      "policy_sensitive_evidence_min": 313,
+      "policy_sensitive_damage_return_required": 194,
+      "policy_sensitive_delivery_grace": 138
+    },
+    "test": {
+      "reaches_auto_limits": 1304,
+      "bypasses_auto_limits": 1244,
+      "action_policy_sensitive": 1668,
+      "action_policy_invariant": 880,
+      "age_policy_flip": 120,
+      "age_boundary": 72,
+      "precedence": 336,
+      "auto_caps": 168,
+      "invariance": 1356,
+      "policy_flip": 180,
+      "policy_sensitive_amount_limit": 716,
+      "policy_sensitive_units_limit": 686,
+      "policy_sensitive_age_limit": 696,
+      "policy_sensitive_return_days": 181,
+      "policy_sensitive_evidence_min": 534,
+      "policy_sensitive_damage_return_required": 327,
+      "policy_sensitive_delivery_grace": 183
+    },
+    "train": {
+      "reaches_auto_limits": 1894,
+      "bypasses_auto_limits": 1844,
+      "action_policy_sensitive": 2414,
+      "action_policy_invariant": 1324,
+      "age_policy_flip": 180,
+      "age_boundary": 72,
+      "precedence": 336,
+      "auto_caps": 168,
+      "invariance": 1646,
+      "policy_flip": 300,
+      "policy_sensitive_amount_limit": 1128,
+      "policy_sensitive_units_limit": 992,
+      "policy_sensitive_age_limit": 1090,
+      "policy_sensitive_return_days": 264,
+      "policy_sensitive_evidence_min": 824,
+      "policy_sensitive_damage_return_required": 475,
+      "policy_sensitive_delivery_grace": 261
+    },
+    "validation": {
+      "reaches_auto_limits": 802,
+      "bypasses_auto_limits": 710,
+      "action_policy_sensitive": 1063,
+      "action_policy_invariant": 449,
+      "age_policy_flip": 60,
+      "age_boundary": 72,
+      "precedence": 182,
+      "auto_caps": 168,
+      "invariance": 940,
+      "policy_flip": 80,
+      "policy_sensitive_amount_limit": 404,
+      "policy_sensitive_units_limit": 411,
+      "policy_sensitive_age_limit": 444,
+      "policy_sensitive_return_days": 142,
+      "policy_sensitive_evidence_min": 351,
+      "policy_sensitive_damage_return_required": 194,
+      "policy_sensitive_delivery_grace": 127
+    }
+  },
+  "shortcut_audit": {
+    "calibration": {
+      "cap_first_errors": 63,
+      "information_before_risk_errors": 6,
+      "fixed_age_thresholds": {
+        "-1": {
+          "errors": 648,
+          "age_pair_errors": 30
+        },
+        "0": {
+          "errors": 574,
+          "age_pair_errors": 30
+        },
+        "1": {
+          "errors": 514,
+          "age_pair_errors": 30
+        },
+        "2": {
+          "errors": 444,
+          "age_pair_errors": 30
+        },
+        "3": {
+          "errors": 368,
+          "age_pair_errors": 30
+        },
+        "4": {
+          "errors": 320,
+          "age_pair_errors": 30
+        },
+        "5": {
+          "errors": 278,
+          "age_pair_errors": 30
+        },
+        "6": {
+          "errors": 262,
+          "age_pair_errors": 30
+        },
+        "7": {
+          "errors": 240,
+          "age_pair_errors": 30
+        },
+        "8": {
+          "errors": 230,
+          "age_pair_errors": 30
+        },
+        "9": {
+          "errors": 223,
+          "age_pair_errors": 30
+        },
+        "10": {
+          "errors": 213,
+          "age_pair_errors": 30
+        },
+        "11": {
+          "errors": 202,
+          "age_pair_errors": 30
+        },
+        "12": {
+          "errors": 190,
+          "age_pair_errors": 30
+        },
+        "13": {
+          "errors": 169,
+          "age_pair_errors": 30
+        },
+        "14": {
+          "errors": 152,
+          "age_pair_errors": 30
+        },
+        "15": {
+          "errors": 149,
+          "age_pair_errors": 30
+        },
+        "16": {
+          "errors": 138,
+          "age_pair_errors": 30
+        },
+        "17": {
+          "errors": 132,
+          "age_pair_errors": 30
+        },
+        "18": {
+          "errors": 125,
+          "age_pair_errors": 30
+        },
+        "19": {
+          "errors": 111,
+          "age_pair_errors": 30
+        },
+        "20": {
+          "errors": 103,
+          "age_pair_errors": 30
+        },
+        "21": {
+          "errors": 90,
+          "age_pair_errors": 30
+        },
+        "22": {
+          "errors": 91,
+          "age_pair_errors": 30
+        },
+        "23": {
+          "errors": 86,
+          "age_pair_errors": 30
+        },
+        "24": {
+          "errors": 85,
+          "age_pair_errors": 30
+        },
+        "25": {
+          "errors": 80,
+          "age_pair_errors": 30
+        },
+        "26": {
+          "errors": 78,
+          "age_pair_errors": 30
+        },
+        "27": {
+          "errors": 76,
+          "age_pair_errors": 30
+        },
+        "28": {
+          "errors": 67,
+          "age_pair_errors": 30
+        },
+        "29": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "30": {
+          "errors": 55,
+          "age_pair_errors": 30
+        },
+        "31": {
+          "errors": 60,
+          "age_pair_errors": 30
+        },
+        "32": {
+          "errors": 60,
+          "age_pair_errors": 30
+        },
+        "34": {
+          "errors": 60,
+          "age_pair_errors": 30
+        },
+        "36": {
+          "errors": 60,
+          "age_pair_errors": 30
+        },
+        "37": {
+          "errors": 61,
+          "age_pair_errors": 30
+        },
+        "38": {
+          "errors": 61,
+          "age_pair_errors": 30
+        },
+        "39": {
+          "errors": 61,
+          "age_pair_errors": 30
+        },
+        "40": {
+          "errors": 62,
+          "age_pair_errors": 30
+        },
+        "41": {
+          "errors": 62,
+          "age_pair_errors": 30
+        },
+        "42": {
+          "errors": 62,
+          "age_pair_errors": 30
+        },
+        "43": {
+          "errors": 63,
+          "age_pair_errors": 30
+        },
+        "44": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "45": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "46": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "47": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "50": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "52": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "53": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "55": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "56": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "59": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "60": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "61": {
+          "errors": 64,
+          "age_pair_errors": 30
+        }
+      },
+      "best_fixed_age_accuracy": 0.9636243386243386,
+      "age_policy_pair_rows": 60,
+      "fixed_age_accuracy_on_policy_pairs": 0.5,
+      "fixed_age_complete_pair_accuracy": 0.0
+    },
+    "test": {
+      "cap_first_errors": 126,
+      "information_before_risk_errors": 6,
+      "fixed_age_thresholds": {
+        "-1": {
+          "errors": 1092,
+          "age_pair_errors": 60
+        },
+        "0": {
+          "errors": 936,
+          "age_pair_errors": 60
+        },
+        "1": {
+          "errors": 832,
+          "age_pair_errors": 60
+        },
+        "2": {
+          "errors": 735,
+          "age_pair_errors": 60
+        },
+        "3": {
+          "errors": 607,
+          "age_pair_errors": 60
+        },
+        "4": {
+          "errors": 546,
+          "age_pair_errors": 60
+        },
+        "5": {
+          "errors": 489,
+          "age_pair_errors": 60
+        },
+        "6": {
+          "errors": 456,
+          "age_pair_errors": 60
+        },
+        "7": {
+          "errors": 411,
+          "age_pair_errors": 60
+        },
+        "8": {
+          "errors": 388,
+          "age_pair_errors": 60
+        },
+        "9": {
+          "errors": 361,
+          "age_pair_errors": 60
+        },
+        "10": {
+          "errors": 334,
+          "age_pair_errors": 60
+        },
+        "11": {
+          "errors": 305,
+          "age_pair_errors": 60
+        },
+        "12": {
+          "errors": 288,
+          "age_pair_errors": 60
+        },
+        "13": {
+          "errors": 260,
+          "age_pair_errors": 60
+        },
+        "14": {
+          "errors": 231,
+          "age_pair_errors": 60
+        },
+        "15": {
+          "errors": 222,
+          "age_pair_errors": 60
+        },
+        "16": {
+          "errors": 203,
+          "age_pair_errors": 60
+        },
+        "17": {
+          "errors": 188,
+          "age_pair_errors": 60
+        },
+        "18": {
+          "errors": 184,
+          "age_pair_errors": 60
+        },
+        "19": {
+          "errors": 176,
+          "age_pair_errors": 60
+        },
+        "20": {
+          "errors": 165,
+          "age_pair_errors": 60
+        },
+        "21": {
+          "errors": 146,
+          "age_pair_errors": 60
+        },
+        "22": {
+          "errors": 143,
+          "age_pair_errors": 60
+        },
+        "23": {
+          "errors": 137,
+          "age_pair_errors": 60
+        },
+        "24": {
+          "errors": 136,
+          "age_pair_errors": 60
+        },
+        "25": {
+          "errors": 131,
+          "age_pair_errors": 60
+        },
+        "26": {
+          "errors": 123,
+          "age_pair_errors": 60
+        },
+        "27": {
+          "errors": 113,
+          "age_pair_errors": 60
+        },
+        "28": {
+          "errors": 107,
+          "age_pair_errors": 60
+        },
+        "29": {
+          "errors": 95,
+          "age_pair_errors": 60
+        },
+        "30": {
+          "errors": 89,
+          "age_pair_errors": 60
+        },
+        "31": {
+          "errors": 93,
+          "age_pair_errors": 60
+        },
+        "32": {
+          "errors": 94,
+          "age_pair_errors": 60
+        },
+        "34": {
+          "errors": 94,
+          "age_pair_errors": 60
+        },
+        "35": {
+          "errors": 94,
+          "age_pair_errors": 60
+        },
+        "36": {
+          "errors": 95,
+          "age_pair_errors": 60
+        },
+        "37": {
+          "errors": 96,
+          "age_pair_errors": 60
+        },
+        "38": {
+          "errors": 96,
+          "age_pair_errors": 60
+        },
+        "40": {
+          "errors": 97,
+          "age_pair_errors": 60
+        },
+        "41": {
+          "errors": 97,
+          "age_pair_errors": 60
+        },
+        "42": {
+          "errors": 97,
+          "age_pair_errors": 60
+        },
+        "44": {
+          "errors": 97,
+          "age_pair_errors": 60
+        },
+        "46": {
+          "errors": 97,
+          "age_pair_errors": 60
+        },
+        "50": {
+          "errors": 97,
+          "age_pair_errors": 60
+        },
+        "51": {
+          "errors": 98,
+          "age_pair_errors": 60
+        },
+        "52": {
+          "errors": 98,
+          "age_pair_errors": 60
+        },
+        "56": {
+          "errors": 98,
+          "age_pair_errors": 60
+        },
+        "57": {
+          "errors": 98,
+          "age_pair_errors": 60
+        },
+        "59": {
+          "errors": 100,
+          "age_pair_errors": 60
+        },
+        "60": {
+          "errors": 100,
+          "age_pair_errors": 60
+        },
+        "61": {
+          "errors": 100,
+          "age_pair_errors": 60
+        }
+      },
+      "best_fixed_age_accuracy": 0.9650706436420722,
+      "age_policy_pair_rows": 120,
+      "fixed_age_accuracy_on_policy_pairs": 0.5,
+      "fixed_age_complete_pair_accuracy": 0.0
+    },
+    "train": {
+      "cap_first_errors": 126,
+      "information_before_risk_errors": 6,
+      "fixed_age_thresholds": {
+        "-1": {
+          "errors": 1602,
+          "age_pair_errors": 90
+        },
+        "0": {
+          "errors": 1446,
+          "age_pair_errors": 90
+        },
+        "1": {
+          "errors": 1294,
+          "age_pair_errors": 90
+        },
+        "2": {
+          "errors": 1149,
+          "age_pair_errors": 90
+        },
+        "3": {
+          "errors": 965,
+          "age_pair_errors": 90
+        },
+        "4": {
+          "errors": 871,
+          "age_pair_errors": 90
+        },
+        "5": {
+          "errors": 752,
+          "age_pair_errors": 90
+        },
+        "6": {
+          "errors": 698,
+          "age_pair_errors": 90
+        },
+        "7": {
+          "errors": 640,
+          "age_pair_errors": 90
+        },
+        "8": {
+          "errors": 597,
+          "age_pair_errors": 90
+        },
+        "9": {
+          "errors": 552,
+          "age_pair_errors": 90
+        },
+        "10": {
+          "errors": 523,
+          "age_pair_errors": 90
+        },
+        "11": {
+          "errors": 479,
+          "age_pair_errors": 90
+        },
+        "12": {
+          "errors": 429,
+          "age_pair_errors": 90
+        },
+        "13": {
+          "errors": 383,
+          "age_pair_errors": 90
+        },
+        "14": {
+          "errors": 334,
+          "age_pair_errors": 90
+        },
+        "15": {
+          "errors": 318,
+          "age_pair_errors": 90
+        },
+        "16": {
+          "errors": 308,
+          "age_pair_errors": 90
+        },
+        "17": {
+          "errors": 298,
+          "age_pair_errors": 90
+        },
+        "18": {
+          "errors": 287,
+          "age_pair_errors": 90
+        },
+        "19": {
+          "errors": 268,
+          "age_pair_errors": 90
+        },
+        "20": {
+          "errors": 255,
+          "age_pair_errors": 90
+        },
+        "21": {
+          "errors": 229,
+          "age_pair_errors": 90
+        },
+        "22": {
+          "errors": 222,
+          "age_pair_errors": 90
+        },
+        "23": {
+          "errors": 215,
+          "age_pair_errors": 90
+        },
+        "24": {
+          "errors": 210,
+          "age_pair_errors": 90
+        },
+        "25": {
+          "errors": 196,
+          "age_pair_errors": 90
+        },
+        "26": {
+          "errors": 181,
+          "age_pair_errors": 90
+        },
+        "27": {
+          "errors": 164,
+          "age_pair_errors": 90
+        },
+        "28": {
+          "errors": 156,
+          "age_pair_errors": 90
+        },
+        "29": {
+          "errors": 140,
+          "age_pair_errors": 90
+        },
+        "30": {
+          "errors": 125,
+          "age_pair_errors": 90
+        },
+        "31": {
+          "errors": 128,
+          "age_pair_errors": 90
+        },
+        "32": {
+          "errors": 128,
+          "age_pair_errors": 90
+        },
+        "33": {
+          "errors": 129,
+          "age_pair_errors": 90
+        },
+        "34": {
+          "errors": 129,
+          "age_pair_errors": 90
+        },
+        "35": {
+          "errors": 130,
+          "age_pair_errors": 90
+        },
+        "36": {
+          "errors": 131,
+          "age_pair_errors": 90
+        },
+        "37": {
+          "errors": 132,
+          "age_pair_errors": 90
+        },
+        "39": {
+          "errors": 133,
+          "age_pair_errors": 90
+        },
+        "40": {
+          "errors": 133,
+          "age_pair_errors": 90
+        },
+        "42": {
+          "errors": 135,
+          "age_pair_errors": 90
+        },
+        "43": {
+          "errors": 135,
+          "age_pair_errors": 90
+        },
+        "45": {
+          "errors": 135,
+          "age_pair_errors": 90
+        },
+        "47": {
+          "errors": 135,
+          "age_pair_errors": 90
+        },
+        "48": {
+          "errors": 135,
+          "age_pair_errors": 90
+        },
+        "51": {
+          "errors": 136,
+          "age_pair_errors": 90
+        },
+        "52": {
+          "errors": 137,
+          "age_pair_errors": 90
+        },
+        "53": {
+          "errors": 138,
+          "age_pair_errors": 90
+        },
+        "54": {
+          "errors": 138,
+          "age_pair_errors": 90
+        },
+        "56": {
+          "errors": 138,
+          "age_pair_errors": 90
+        },
+        "57": {
+          "errors": 138,
+          "age_pair_errors": 90
+        },
+        "58": {
+          "errors": 139,
+          "age_pair_errors": 90
+        },
+        "59": {
+          "errors": 140,
+          "age_pair_errors": 90
+        }
+      },
+      "best_fixed_age_accuracy": 0.9665596575708936,
+      "age_policy_pair_rows": 180,
+      "fixed_age_accuracy_on_policy_pairs": 0.5,
+      "fixed_age_complete_pair_accuracy": 0.0
+    },
+    "validation": {
+      "cap_first_errors": 63,
+      "information_before_risk_errors": 6,
+      "fixed_age_thresholds": {
+        "-1": {
+          "errors": 648,
+          "age_pair_errors": 30
+        },
+        "0": {
+          "errors": 594,
+          "age_pair_errors": 30
+        },
+        "1": {
+          "errors": 540,
+          "age_pair_errors": 30
+        },
+        "2": {
+          "errors": 474,
+          "age_pair_errors": 30
+        },
+        "3": {
+          "errors": 389,
+          "age_pair_errors": 30
+        },
+        "4": {
+          "errors": 351,
+          "age_pair_errors": 30
+        },
+        "5": {
+          "errors": 304,
+          "age_pair_errors": 30
+        },
+        "6": {
+          "errors": 283,
+          "age_pair_errors": 30
+        },
+        "7": {
+          "errors": 251,
+          "age_pair_errors": 30
+        },
+        "8": {
+          "errors": 241,
+          "age_pair_errors": 30
+        },
+        "9": {
+          "errors": 227,
+          "age_pair_errors": 30
+        },
+        "10": {
+          "errors": 215,
+          "age_pair_errors": 30
+        },
+        "11": {
+          "errors": 208,
+          "age_pair_errors": 30
+        },
+        "12": {
+          "errors": 189,
+          "age_pair_errors": 30
+        },
+        "13": {
+          "errors": 168,
+          "age_pair_errors": 30
+        },
+        "14": {
+          "errors": 149,
+          "age_pair_errors": 30
+        },
+        "15": {
+          "errors": 152,
+          "age_pair_errors": 30
+        },
+        "16": {
+          "errors": 141,
+          "age_pair_errors": 30
+        },
+        "17": {
+          "errors": 128,
+          "age_pair_errors": 30
+        },
+        "18": {
+          "errors": 116,
+          "age_pair_errors": 30
+        },
+        "19": {
+          "errors": 115,
+          "age_pair_errors": 30
+        },
+        "20": {
+          "errors": 105,
+          "age_pair_errors": 30
+        },
+        "21": {
+          "errors": 88,
+          "age_pair_errors": 30
+        },
+        "22": {
+          "errors": 90,
+          "age_pair_errors": 30
+        },
+        "23": {
+          "errors": 82,
+          "age_pair_errors": 30
+        },
+        "24": {
+          "errors": 82,
+          "age_pair_errors": 30
+        },
+        "25": {
+          "errors": 79,
+          "age_pair_errors": 30
+        },
+        "26": {
+          "errors": 77,
+          "age_pair_errors": 30
+        },
+        "27": {
+          "errors": 75,
+          "age_pair_errors": 30
+        },
+        "28": {
+          "errors": 72,
+          "age_pair_errors": 30
+        },
+        "29": {
+          "errors": 67,
+          "age_pair_errors": 30
+        },
+        "30": {
+          "errors": 55,
+          "age_pair_errors": 30
+        },
+        "31": {
+          "errors": 58,
+          "age_pair_errors": 30
+        },
+        "32": {
+          "errors": 58,
+          "age_pair_errors": 30
+        },
+        "33": {
+          "errors": 61,
+          "age_pair_errors": 30
+        },
+        "34": {
+          "errors": 61,
+          "age_pair_errors": 30
+        },
+        "35": {
+          "errors": 61,
+          "age_pair_errors": 30
+        },
+        "36": {
+          "errors": 61,
+          "age_pair_errors": 30
+        },
+        "37": {
+          "errors": 61,
+          "age_pair_errors": 30
+        },
+        "38": {
+          "errors": 61,
+          "age_pair_errors": 30
+        },
+        "39": {
+          "errors": 61,
+          "age_pair_errors": 30
+        },
+        "40": {
+          "errors": 61,
+          "age_pair_errors": 30
+        },
+        "42": {
+          "errors": 63,
+          "age_pair_errors": 30
+        },
+        "46": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "50": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "54": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "55": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "56": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "57": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "59": {
+          "errors": 64,
+          "age_pair_errors": 30
+        },
+        "60": {
+          "errors": 64,
+          "age_pair_errors": 30
+        }
+      },
+      "best_fixed_age_accuracy": 0.9636243386243386,
+      "age_policy_pair_rows": 60,
+      "fixed_age_accuracy_on_policy_pairs": 0.5,
+      "fixed_age_complete_pair_accuracy": 0.0
+    }
+  },
+  "learning_subset_coverage": {
+    "196": {
+      "actions": {
+        "refund_only": 35,
+        "manual_review": 49,
+        "reship": 25,
+        "return_refund": 24,
+        "request_info": 33,
+        "wait": 12,
+        "decline": 18
+      },
+      "scenario_families": 79
+    },
+    "490": {
+      "actions": {
+        "refund_only": 80,
+        "manual_review": 117,
+        "reship": 62,
+        "return_refund": 57,
+        "request_info": 88,
+        "wait": 34,
+        "decline": 52
+      },
+      "scenario_families": 79
+    },
+    "980": {
+      "actions": {
+        "refund_only": 157,
+        "manual_review": 223,
+        "reship": 123,
+        "return_refund": 110,
+        "request_info": 186,
+        "wait": 73,
+        "decline": 108
+      },
+      "scenario_families": 79
+    },
+    "1960": {
+      "actions": {
+        "refund_only": 282,
+        "manual_review": 416,
+        "reship": 239,
+        "return_refund": 237,
+        "request_info": 383,
+        "wait": 157,
+        "decline": 246
+      },
+      "scenario_families": 79
+    },
+    "3738": {
+      "actions": {
+        "refund_only": 534,
+        "manual_review": 534,
+        "reship": 534,
+        "return_refund": 534,
+        "request_info": 534,
+        "wait": 534,
+        "decline": 534
+      },
+      "scenario_families": 79
+    }
+  },
+  "tokenizer_only": true,
+  "model_weights_loaded": false,
+  "training_started": false,
+  "human_review": "pending",
+  "semantic_scope": "v3 threshold-normalized context retaining literal policy values, not full logical equivalence",
+  "policy_probe_scope": "next_action flips under one allowed parameter intervention; invariant does not imply joint/global independence"
+}
