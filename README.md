@@ -1,6 +1,7 @@
 - [Azure Account Owner 是什么，以及如何在界面上创建订阅](docs/azure-account-owner-create-subscription/azure-account-owner-create-subscription.md)
 - [Azure Account Owner 如何查看相关订阅用量](docs/azure-account-owner-cost-analysis/azure-account-owner-cost-analysis.md)
 - [Azure Account Owner 如何下载 Azure 用量明细](docs/azure-account-owner-download-usage-details/azure-account-owner-download-usage-details.md)
+- [Azure 角色的克隆与修改：创建看不到计费信息的 Contributor](docs/azure-custom-role-clone-and-modify/azure-custom-role-clone-and-modify.md)
 - [DeepSeek Harness 插件实践-在侧边栏做Azure 成本看板](docs/dsh-plugin-azure-cost-dashboard/dsh-plugin-azure-cost-dashboard.md)
 - [如何给 Azure 订阅设置用量告警](docs/azure-subscription-usage-alerts/azure-subscription-usage-alerts.md)
 - [Azure Tenant Root Group、Management Group 和订阅的关系](docs/azure-tenant-root-management-group-subscription/azure-tenant-root-management-group-subscription.md)
@@ -29,3 +30,4 @@
 - [用 Telegram 和 Foundry Hosted Agent 搭建低成本个人助理](docs/telegram-foundry-hosted-agent-assistant/telegram-foundry-hosted-agent-assistant.md)
 - [使用 PyTorch + MPS 微调 Qwen](docs/pytorch-mps-qwen-finetuning/pytorch-mps-qwen-finetuning.md)
 - [使用 PyTorch + CUDA 在 L4 上微调 Qwen](docs/pytorch-cuda-l4-qwen-finetuning/pytorch-cuda-l4-qwen-finetuning.md)
+- [使用 Azure API Management 为 Foundry 模型自动启用低价 Flex 模式](docs/apim-foundry-flex-tier/apim-foundry-flex-tier.md)

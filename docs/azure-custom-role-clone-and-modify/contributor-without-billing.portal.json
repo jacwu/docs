@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "roleName": "Contributor Without Billing",
+    "description": "Manage Azure resources without granting billing, consumption, or cost-management access.",
+    "assignableScopes": [
+      "/subscriptions/<subscription-id>"
+    ],
+    "permissions": [
+      {
+        "actions": [
+          "*"
+        ],
+        "notActions": [
+          "Microsoft.Authorization/*/Delete",
+          "Microsoft.Authorization/*/Write",
+          "Microsoft.Authorization/elevateAccess/Action",
+          "Microsoft.Blueprint/blueprintAssignments/write",
+          "Microsoft.Blueprint/blueprintAssignments/delete",
+          "Microsoft.Compute/galleries/share/action",
+          "Microsoft.Purview/consents/write",
+          "Microsoft.Purview/consents/delete",
+          "Microsoft.Resources/deploymentStacks/manageDenySetting/action",
+          "Microsoft.Subscription/cancel/action",
+          "Microsoft.Subscription/enable/action",
+          "Microsoft.Billing/*",
+          "Microsoft.Consumption/*",
+          "Microsoft.CostManagement/*",
+          "Microsoft.Commerce/*"
+        ],
+        "dataActions": [],
+        "notDataActions": []
+      }
+    ]
+  }
+}
